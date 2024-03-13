@@ -1,16 +1,31 @@
-package com.gultekingultas.paymentapidemo;
+package com.gultekingultas.paymentapidemo.Dto;
 
 import com.gultekingultas.paymentapidemo.Enum.PaymentType;
-import com.gultekingultas.paymentapidemo.Utility.CardUtil;
 
-public class ResponsePaymentRequest {
+import java.util.Random;
+
+public class PaymentResponseDto {
     private double amount;
     private PaymentType paymentType;
     private Long orderId;
-    private String paymentDetails;
-    private String cardNumber;
     private boolean paymentStatus;
 
+    public PaymentResponseDto(double amount, PaymentType paymentType, Long orderId) {
+        this.amount = amount;
+        this.paymentType = paymentType;
+        this.orderId = orderId;
+        this.paymentStatus = getRandomPaymentStatus();
+
+    }
+    public boolean getPaymentStatus()
+    {
+        return this.paymentStatus;
+    }
+    private boolean getRandomPaymentStatus()
+    {
+        Random random = new Random();
+        return random.nextBoolean();
+    }
 
     public double getAmount() {
         return amount;
@@ -36,25 +51,7 @@ public class ResponsePaymentRequest {
         this.orderId = orderId;
     }
 
-    public String getPaymentDetails() {
-        return paymentDetails;
-    }
 
-    public void setPaymentDetails(String paymentDetails) {
-        this.paymentDetails = paymentDetails;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = CardUtil.maskTheCardNumber(cardNumber);
-    }
-
-    public boolean isPaymentStatus() {
-        return paymentStatus;
-    }
 
     public void setPaymentStatus(boolean paymentStatus) {
         this.paymentStatus = paymentStatus;

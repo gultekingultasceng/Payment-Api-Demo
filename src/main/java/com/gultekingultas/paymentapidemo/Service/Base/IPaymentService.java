@@ -1,9 +1,9 @@
 package com.gultekingultas.paymentapidemo.Service.Base;
 
-import com.gultekingultas.paymentapidemo.Dto.PaymentRequest;
-import com.gultekingultas.paymentapidemo.ResponsePaymentRequest;
+import com.gultekingultas.paymentapidemo.Dto.PaymentRequestDto;
+import com.gultekingultas.paymentapidemo.Dto.PaymentResponseDto;
 
 
 public interface IPaymentService {
-    ResponsePaymentRequest processPayment(PaymentRequest paymentRequest);
+    PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto);
 }

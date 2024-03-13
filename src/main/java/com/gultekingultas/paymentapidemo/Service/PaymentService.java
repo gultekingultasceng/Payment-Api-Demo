@@ -1,7 +1,7 @@
 package com.gultekingultas.paymentapidemo.Service;
 
-import com.gultekingultas.paymentapidemo.Dto.PaymentRequest;
-import com.gultekingultas.paymentapidemo.ResponsePaymentRequest;
+import com.gultekingultas.paymentapidemo.Dto.PaymentRequestDto;
+import com.gultekingultas.paymentapidemo.Dto.PaymentResponseDto;
 import com.gultekingultas.paymentapidemo.Service.Base.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,7 +18,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public ResponsePaymentRequest processPayment(PaymentRequest paymentRequest) {
-        return getRelatedPayment(paymentRequest.getPaymentType().toString()).processPayment(paymentRequest);
+    public PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto) {
+        return getRelatedPayment(paymentRequestDto.getPaymentType().toString()).processPayment(paymentRequestDto);
     }
 }

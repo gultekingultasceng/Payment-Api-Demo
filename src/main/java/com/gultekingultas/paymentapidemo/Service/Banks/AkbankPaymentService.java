@@ -1,8 +1,7 @@
 package com.gultekingultas.paymentapidemo.Service.Banks;
 
-import com.gultekingultas.paymentapidemo.Entity.PaymentTransaction;
-import com.gultekingultas.paymentapidemo.Dto.PaymentRequest;
-import com.gultekingultas.paymentapidemo.ResponsePaymentRequest;
+import com.gultekingultas.paymentapidemo.Dto.PaymentRequestDto;
+import com.gultekingultas.paymentapidemo.Dto.PaymentResponseDto;
 import com.gultekingultas.paymentapidemo.Service.Base.IPaymentService;
 import com.gultekingultas.paymentapidemo.Service.PaymentTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,13 @@ public class AkbankPaymentService implements IPaymentService {
     @Autowired
     PaymentTransactionService paymentTransactionService;
     @Override
-    public ResponsePaymentRequest processPayment(PaymentRequest paymentRequest) {
-        paymentTransactionService.createPaymentTransactionFromPaymentRequest(paymentRequest);
-        return null;
+    public PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto) {
+        PaymentResponseDto paymentResponseDto = new PaymentResponseDto(
+                paymentRequestDto.getAmount(),
+                paymentRequestDto.getPaymentType(),
+                paymentRequestDto.getOrderId()
+        );
+        paymentTransactionService.createPaymentTransactionFromPaymentRequest(paymentRequestDto , paymentResponseDto.getPaymentStatus());
+        return paymentResponseDto;
     }
 }

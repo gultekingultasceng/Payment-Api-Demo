@@ -16,6 +16,7 @@ public class PaymentTransaction {
     private Long orderId;
     private String paymentDetails;
     private String cardNumber;
+    private boolean orderStatus;
 
     public double getAmount() {
         return amount;
@@ -55,5 +56,13 @@ public class PaymentTransaction {
 
     public void setCardNumber(String cardNumber) {
         this.cardNumber = CardUtil.maskTheCardNumber(cardNumber);
+    }
+
+    public boolean isOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(boolean orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

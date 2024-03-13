@@ -1,6 +1,6 @@
 package com.gultekingultas.paymentapidemo.Service;
 
-import com.gultekingultas.paymentapidemo.Dto.PaymentRequest;
+import com.gultekingultas.paymentapidemo.Dto.PaymentRequestDto;
 import com.gultekingultas.paymentapidemo.Entity.PaymentTransaction;
 import com.gultekingultas.paymentapidemo.Repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +11,15 @@ public class PaymentTransactionService {
 
     @Autowired
     PaymentRepository paymentRepository;
-    public PaymentTransaction createPaymentTransactionFromPaymentRequest(PaymentRequest paymentRequest)
+    public void createPaymentTransactionFromPaymentRequest(PaymentRequestDto paymentRequestDto , boolean isPaymentStatusOK)
     {
         PaymentTransaction paymentTransaction = new PaymentTransaction();
-        paymentTransaction.setPaymentDetails(paymentRequest.getPaymentDetails());
-        paymentTransaction.setPaymentType(paymentRequest.getPaymentType().toString());
-        paymentTransaction.setAmount(paymentRequest.getAmount());
-        paymentTransaction.setOrderId(paymentRequest.getOrderId());
-        paymentTransaction.setCardNumber(paymentRequest.getCardNumber());
+        paymentTransaction.setPaymentType(paymentRequestDto.getPaymentType().toString());
+        paymentTransaction.setAmount(paymentRequestDto.getAmount());
+        paymentTransaction.setOrderId(paymentRequestDto.getOrderId());
+        paymentTransaction.setCardNumber(paymentRequestDto.getCardNumber());
+        paymentTransaction.setOrderStatus(isPaymentStatusOK);
         //
-        return paymentTransaction;
+        paymentRepository.save(paymentTransaction);
     }
 }
