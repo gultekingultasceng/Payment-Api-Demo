@@ -10,8 +10,13 @@ import org.springframework.stereotype.Service;
 @Service("Akbank")
 public class AkbankPaymentService implements IPaymentService {
 
-    @Autowired
+    final
     PaymentTransactionService paymentTransactionService;
+
+    public AkbankPaymentService(PaymentTransactionService paymentTransactionService) {
+        this.paymentTransactionService = paymentTransactionService;
+    }
+
     @Override
     public PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto) {
         PaymentResponseDto paymentResponseDto = new PaymentResponseDto(

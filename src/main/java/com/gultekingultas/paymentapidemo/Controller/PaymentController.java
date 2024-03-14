@@ -17,20 +17,17 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
+    private final PaymentService paymentService;
 
-    @Autowired
-    private PaymentService paymentService;
-
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
 
 
     @PostMapping("/makepayments")
-    public ResponseEntity<PaymentResponseDto> makePayment(@RequestBody PaymentRequestDto paymentRequestDto)
-    {
-        try{
-            return new ResponseEntity<>(paymentService.processPayment(paymentRequestDto) , HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<PaymentResponseDto> makePayment(@RequestBody PaymentRequestDto paymentRequestDto) throws Exception {
+        PaymentResponseDto paymentResponseDto = paymentService.processPayment(paymentRequestDto);
+            return new ResponseEntity<>(paymentResponseDto , HttpStatus.OK);
     }
 
 

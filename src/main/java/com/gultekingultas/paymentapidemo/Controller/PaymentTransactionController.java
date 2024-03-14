@@ -1,12 +1,15 @@
 package com.gultekingultas.paymentapidemo.Controller;
 
+import com.gultekingultas.paymentapidemo.Dto.PaymentTransactionDto;
 import com.gultekingultas.paymentapidemo.Entity.PaymentTransaction;
 import com.gultekingultas.paymentapidemo.Repository.PaymentRepository;
+import com.gultekingultas.paymentapidemo.Service.PaymentTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -14,35 +17,21 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("api/payments")
 public class PaymentTransactionController {
 
-    @Autowired
-    private PaymentRepository paymentRepository;
+    private final PaymentTransactionService paymentTransactionService;
+
+    public PaymentTransactionController(PaymentTransactionService paymentTransactionService) {
+        this.paymentTransactionService = paymentTransactionService;
+    }
+
     @GetMapping("/getallpayments")
-    public ResponseEntity<List<PaymentTransaction>> getAllPayments()
-    {
-        try {
-            List<PaymentTransaction> allPaymentList = new ArrayList<>(paymentRepository.findAll());
-            if (allPaymentList.isEmpty())
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            return new ResponseEntity<>(allPaymentList , HttpStatus.OK);
-        }
-        catch (Exception e)
-        {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<PaymentTransactionDto>> getAllPayments() throws Exception {
+       return new ResponseEntity<>(paymentTransactionService.getAllPayments(), HttpStatus.OK);
     }
     @GetMapping("/getpaymentsbyorderid/{orderId}")
-    public ResponseEntity<PaymentTransaction> getPaymentFromOrderId(@PathVariable Long orderId)
-    {
-        try{
-            Optional<PaymentTransaction> paymentData = paymentRepository.findByOrderId(orderId);
-            if (paymentData.isPresent())
-                return new ResponseEntity<>(paymentData.get() , HttpStatus.OK);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e)
-        {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<PaymentTransactionDto> getPaymentFromOrderId(@PathVariable Long orderId) throws Exception {
+       return new ResponseEntity<>(paymentTransactionService.getPaymentFromOrderId(orderId) , HttpStatus.OK);
     }
 }

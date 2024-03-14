@@ -5,5 +5,5 @@ import com.gultekingultas.paymentapidemo.Dto.PaymentResponseDto;
 
 
 public interface IPaymentService {
-    PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto);
+    PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto) throws Exception;
 }

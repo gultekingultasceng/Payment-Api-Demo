@@ -10,8 +10,13 @@ import org.springframework.stereotype.Service;
 @Service("Garanti")
 public class GarantiPaymentService implements IPaymentService {
 
-    @Autowired
+    final
     PaymentTransactionService paymentTransactionService;
+
+    public GarantiPaymentService(PaymentTransactionService paymentTransactionService) {
+        this.paymentTransactionService = paymentTransactionService;
+    }
+
     @Override
     public PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto) {
         PaymentResponseDto paymentResponseDto = new PaymentResponseDto(
@@ -22,4 +27,6 @@ public class GarantiPaymentService implements IPaymentService {
         paymentTransactionService.createPaymentTransactionFromPaymentRequest(paymentRequestDto , paymentResponseDto.getPaymentStatus());
         return paymentResponseDto;
     }
+
+
 }
