@@ -1,6 +1,5 @@
 package com.gultekingultas.paymentapidemo.Entity;
 
-import com.gultekingultas.paymentapidemo.Utility.CardUtil;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,9 +20,4 @@ public class PaymentTransaction {
     private String paymentDetails;
     private String cardNumber;
     private boolean orderStatus;
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = CardUtil.maskTheCardNumber(cardNumber);
-    }
-
-
 }

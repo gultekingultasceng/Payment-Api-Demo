@@ -2,6 +2,7 @@ package com.gultekingultas.paymentapidemo.Service;
 
 import com.gultekingultas.paymentapidemo.Dto.PaymentRequestDto;
 import com.gultekingultas.paymentapidemo.Dto.PaymentResponseDto;
+import com.gultekingultas.paymentapidemo.Exception.PaymentException;
 import com.gultekingultas.paymentapidemo.Service.Base.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -12,8 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentService implements IPaymentService {
 
-    @Autowired
+    final
     ApplicationContext context;
+
+    public PaymentService(ApplicationContext context) {
+        this.context = context;
+    }
+
     public IPaymentService getRelatedPayment(String paymentMethod)
     {
         return (IPaymentService) context.getBean(paymentMethod);
@@ -21,12 +27,11 @@ public class PaymentService implements IPaymentService {
 
     @Override
     public PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto) throws Exception {
+        String paymentType = paymentRequestDto.getPaymentType().toString();
         try{
-            var paymentType = paymentRequestDto.getPaymentType().toString();
             return getRelatedPayment(paymentType).processPayment(paymentRequestDto);
         }catch (Exception e){
-            throw new Exception();
+            throw new PaymentException(paymentType);
         }
-
     }
 }
