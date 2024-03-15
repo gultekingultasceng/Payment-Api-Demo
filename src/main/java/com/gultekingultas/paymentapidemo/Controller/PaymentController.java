@@ -24,9 +24,7 @@ public class PaymentController {
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
     }
-
-
-    @PostMapping("/makepayments")
+    @PostMapping("/make")
     public ResponseEntity<PaymentResponseDto> makePayment(@Valid @RequestBody PaymentRequestDto paymentRequestDto) throws Exception {
         PaymentResponseDto paymentResponseDto = paymentService.processPayment(paymentRequestDto);
             return new ResponseEntity<>(paymentResponseDto , HttpStatus.OK);

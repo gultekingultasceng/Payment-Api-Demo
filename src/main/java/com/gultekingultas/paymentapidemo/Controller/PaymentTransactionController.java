@@ -26,11 +26,11 @@ public class PaymentTransactionController {
         this.paymentTransactionService = paymentTransactionService;
     }
 
-    @GetMapping("/getallpayments")
+    @GetMapping()
     public ResponseEntity<List<PaymentTransactionDto>> getAllPayments() throws Exception {
        return new ResponseEntity<>(paymentTransactionService.getAllPayments(), HttpStatus.OK);
     }
-    @GetMapping("/getpaymentsbyorderid/{orderId}")
+    @GetMapping("orders/{orderId}")
     public ResponseEntity<PaymentTransactionDto> getPaymentFromOrderId(@PathVariable Long orderId) throws Exception {
        return new ResponseEntity<>(paymentTransactionService.getPaymentFromOrderId(orderId) , HttpStatus.OK);
     }
