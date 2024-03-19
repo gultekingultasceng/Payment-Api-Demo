@@ -26,7 +26,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto) throws Exception {
+    public PaymentResponseDto processPayment(PaymentRequestDto paymentRequestDto) throws PaymentException {
         String paymentType = paymentRequestDto.getPaymentType().toString();
         try{
             return getRelatedPayment(paymentType).processPayment(paymentRequestDto);
