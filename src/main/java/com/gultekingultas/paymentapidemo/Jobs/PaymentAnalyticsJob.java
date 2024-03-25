@@ -16,7 +16,7 @@ public class PaymentAnalyticsJob {
         this.paymentRepository = paymentRepository;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 500000)
     public void denemeJob()
     {
         System.out.println("Most used payment method : "+paymentRepository.findMostUsedPaymentType());
