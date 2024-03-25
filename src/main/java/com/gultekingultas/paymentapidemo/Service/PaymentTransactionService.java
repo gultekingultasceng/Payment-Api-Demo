@@ -24,6 +24,7 @@ public class PaymentTransactionService {
         this.paymentRepository = paymentRepository;
     }
 
+
     public void createPaymentTransactionFromPaymentRequest(PaymentRequestDto paymentRequestDto , boolean isPaymentStatusOK)
     {
         PaymentTransaction paymentTransaction = new PaymentTransaction();
@@ -41,12 +42,7 @@ public class PaymentTransactionService {
             List<PaymentTransactionDto> allPaymentList = new ArrayList<>();
             List<PaymentTransaction> paymentTransactionList = new ArrayList<>(paymentRepository.findAll());
             for (PaymentTransaction paymentTransaction : paymentTransactionList) {
-                PaymentTransactionDto paymentTransactionDto = new PaymentTransactionDto();
-                paymentTransactionDto.setPaymentStatus(paymentTransaction.isOrderStatus());
-                paymentTransactionDto.setPaymentType(PaymentType.valueOf(paymentTransaction.getPaymentType()));
-                paymentTransactionDto.setOrderId(paymentTransaction.getOrderId());
-                paymentTransactionDto.setCardNumber(paymentTransaction.getCardNumber());
-                paymentTransactionDto.setAmount(paymentTransaction.getAmount());
+                PaymentTransactionDto paymentTransactionDto = new PaymentTransactionDto(paymentTransaction);
                 allPaymentList.add(paymentTransactionDto);
             }
             return allPaymentList;
@@ -60,16 +56,12 @@ public class PaymentTransactionService {
     public PaymentTransactionDto getPaymentFromOrderId(Long orderId) throws Exception
     {
         try{
-            PaymentTransactionDto paymentTransactionDto = new PaymentTransactionDto();
+            PaymentTransactionDto paymentTransactionDto = null;
             Optional<PaymentTransaction> paymentTransactionData = paymentRepository.findByOrderId(orderId);
             if (paymentTransactionData.isPresent())
             {
                 PaymentTransaction paymentTransaction = paymentTransactionData.get();
-                paymentTransactionDto.setPaymentStatus(paymentTransaction.isOrderStatus());
-                paymentTransactionDto.setPaymentType(PaymentType.valueOf(paymentTransaction.getPaymentType()));
-                paymentTransactionDto.setAmount(paymentTransaction.getAmount());
-                paymentTransactionDto.setOrderId(paymentTransaction.getOrderId());
-                paymentTransactionDto.setCardNumber(paymentTransaction.getCardNumber());
+                paymentTransactionDto = new PaymentTransactionDto(paymentTransaction);
             }
             return paymentTransactionDto;
         }catch (Exception e)

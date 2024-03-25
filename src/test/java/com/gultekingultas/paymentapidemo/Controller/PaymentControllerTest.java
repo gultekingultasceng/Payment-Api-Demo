@@ -3,10 +3,12 @@ package com.gultekingultas.paymentapidemo.Controller;
 import com.gultekingultas.paymentapidemo.Dto.PaymentRequestDto;
 import com.gultekingultas.paymentapidemo.Dto.PaymentResponseDto;
 import com.gultekingultas.paymentapidemo.Enum.PaymentType;
+import com.gultekingultas.paymentapidemo.Exception.InvalidCardNumberException;
 import com.gultekingultas.paymentapidemo.Exception.PaymentException;
 import com.gultekingultas.paymentapidemo.Service.Base.IPaymentService;
 import com.gultekingultas.paymentapidemo.Service.PaymentService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +39,9 @@ public class PaymentControllerTest {
         paymentRequestDto.setAmount(255);
         paymentRequestDto.setCardNumber("4111111111111111");
         paymentRequestDto.setOrderId(1L);
+
         PaymentResponseDto paymentResponseDto = new PaymentResponseDto(255,PaymentType.Akbank,1L);
+
         when(paymentService.processPayment(paymentRequestDto)).thenReturn(paymentResponseDto);
         ResponseEntity<PaymentResponseDto> response = paymentController.makePayment(paymentRequestDto);
         assertEquals(HttpStatus.OK , response.getStatusCode());
