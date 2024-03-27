@@ -19,7 +19,4 @@ public class PaymentController {
         PaymentResponseDto paymentResponseDto = paymentService.processPayment(paymentRequestDto);
             return new ResponseEntity<>(paymentResponseDto , HttpStatus.OK);
     }
-
-
-
 }

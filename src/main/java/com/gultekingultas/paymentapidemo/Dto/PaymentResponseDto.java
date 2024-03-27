@@ -15,7 +15,7 @@ public class PaymentResponseDto {
     private PaymentType paymentType;
     private Long orderId;
     private boolean paymentStatus;
-
+    Random randomPaymentStatus;
     public PaymentResponseDto(double amount, PaymentType paymentType, Long orderId) {
         this.amount = amount;
         this.paymentType = paymentType;
@@ -28,8 +28,8 @@ public class PaymentResponseDto {
     }
     private boolean getRandomPaymentStatus()
     {
-        Random random = new Random();
-        return random.nextBoolean();
+        randomPaymentStatus = new Random();
+        return randomPaymentStatus.nextBoolean();
     }
 
 

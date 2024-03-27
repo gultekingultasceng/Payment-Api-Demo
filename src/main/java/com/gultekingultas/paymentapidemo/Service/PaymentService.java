@@ -3,12 +3,10 @@ package com.gultekingultas.paymentapidemo.Service;
 import com.gultekingultas.paymentapidemo.Dto.PaymentRequestDto;
 import com.gultekingultas.paymentapidemo.Dto.PaymentResponseDto;
 import com.gultekingultas.paymentapidemo.Exception.PaymentException;
-import com.gultekingultas.paymentapidemo.Kafka.PaymentEventProducer;
+import com.gultekingultas.paymentapidemo.Kafka.PaymentEventProducerKafka;
+import com.gultekingultas.paymentapidemo.RabbitMQ.PaymentEventProducerRabbitmq;
 import com.gultekingultas.paymentapidemo.Service.Base.IPaymentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +15,14 @@ public class PaymentService implements IPaymentService {
     final
     ApplicationContext context;
     final
-    PaymentEventProducer paymentEventProducer;
+    PaymentEventProducerKafka paymentEventProducerKafka;
+    final
+    PaymentEventProducerRabbitmq paymentEventProducerRabbitmq;
 
-    public PaymentService(ApplicationContext context , PaymentEventProducer paymentEventProducer) {
+    public PaymentService(ApplicationContext context , PaymentEventProducerKafka paymentEventProducerKafka, PaymentEventProducerRabbitmq paymentEventProducerRabbitmq) {
         this.context = context;
-        this.paymentEventProducer = paymentEventProducer;
+        this.paymentEventProducerKafka = paymentEventProducerKafka;
+        this.paymentEventProducerRabbitmq = paymentEventProducerRabbitmq;
     }
 
     public IPaymentService getRelatedPayment(String paymentMethod)
@@ -35,7 +36,10 @@ public class PaymentService implements IPaymentService {
         try{
             PaymentResponseDto responseDto = getRelatedPayment(paymentType).processPayment(paymentRequestDto);
             if (!responseDto.getPaymentStatus())
-                paymentEventProducer.sendPaymentEvent(paymentRequestDto);
+            {
+                 paymentEventProducerKafka.sendPaymentEvent(paymentRequestDto);
+                // paymentEventProducerRabbitmq.sendMessage(paymentRequestDto);
+            }
             return responseDto ;
         }catch (Exception e){
             throw new PaymentException(paymentType);
