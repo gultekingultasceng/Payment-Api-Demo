@@ -8,6 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PaymentTransactionDto {
+    private String name;
+    private String surname;
     private double amount;
     private PaymentType paymentType;
     private Long orderId;
@@ -16,6 +18,8 @@ public class PaymentTransactionDto {
 
     public PaymentTransactionDto(PaymentTransaction paymentTransaction)
     {
+        this.name = paymentTransaction.getName();
+        this.surname = paymentTransaction.getSurname();
         this.amount = paymentTransaction.getAmount();
         this.paymentType = PaymentType.valueOf(paymentTransaction.getPaymentType());
         this.orderId = paymentTransaction.getOrderId();

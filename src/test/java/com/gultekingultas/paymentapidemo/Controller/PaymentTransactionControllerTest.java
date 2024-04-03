@@ -6,6 +6,7 @@ import com.gultekingultas.paymentapidemo.Enum.PaymentType;
 import com.gultekingultas.paymentapidemo.Repository.PaymentRepository;
 import com.gultekingultas.paymentapidemo.Service.PaymentTransactionService;
 import jakarta.inject.Inject;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -32,15 +33,14 @@ public class PaymentTransactionControllerTest {
     @Mock
     PaymentTransactionService paymentTransactionService;
 
-
-
-
-
-    @Test
-    public void getAllPaymentsTest_Success() throws Exception {
-
+    PaymentTransaction paymentTransaction;
+    PaymentTransactionDto paymentTransactionDto;
+    List<PaymentTransactionDto> payments;
+    @Before
+    public void setUp()
+    {
         // First add paymenttransaction entities to database manually
-        PaymentTransaction paymentTransaction = new PaymentTransaction();
+        paymentTransaction = new PaymentTransaction();
         paymentTransaction.setOrderStatus(true);
         paymentTransaction.setPaymentDetails("");
         paymentTransaction.setAmount(255);
@@ -48,9 +48,15 @@ public class PaymentTransactionControllerTest {
         paymentTransaction.setOrderId(2L);
         paymentTransaction.setPaymentType(PaymentType.Akbank.toString());
 
-        PaymentTransactionDto paymentTransactionDto = new PaymentTransactionDto(paymentTransaction);
-        List<PaymentTransactionDto> payments = new ArrayList<>();
+        paymentTransactionDto = new PaymentTransactionDto(paymentTransaction);
+        payments = new ArrayList<>();
         payments.add(paymentTransactionDto);
+    }
+
+
+
+    @Test
+    public void getAllPaymentsTest_Success() throws Exception {
         Mockito.when(paymentTransactionService.getAllPayments()).thenReturn(payments);
         ResponseEntity<List<PaymentTransactionDto>> response = paymentTransactionController.getAllPayments();
         assertEquals(response.getStatusCode() , HttpStatus.OK);
@@ -59,21 +65,9 @@ public class PaymentTransactionControllerTest {
         {
             assertEquals(response.getBody().get(i) , payments.get(i));
         }
-
-
     }
-
     @Test
     public void getPaymentByOrderIdTest_Success() throws Exception {
-        // First add paymenttransaction entities to database manually
-        PaymentTransaction paymentTransaction = new PaymentTransaction();
-        paymentTransaction.setOrderStatus(true);
-        paymentTransaction.setPaymentDetails("");
-        paymentTransaction.setAmount(255);
-        paymentTransaction.setCardNumber("**** **** **** 1111");
-        paymentTransaction.setOrderId(2L);
-        paymentTransaction.setPaymentType(PaymentType.Akbank.toString());
-
         PaymentTransactionDto paymentTransactionDto = new PaymentTransactionDto(paymentTransaction);
         Mockito.when(paymentTransactionService.getPaymentFromOrderId(2L)).thenReturn(paymentTransactionDto);
         ResponseEntity<PaymentTransactionDto> response = paymentTransactionController.getPaymentFromOrderId(2L);

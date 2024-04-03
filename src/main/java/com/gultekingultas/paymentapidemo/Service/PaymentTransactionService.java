@@ -5,6 +5,7 @@ import com.gultekingultas.paymentapidemo.Dto.PaymentTransactionDto;
 import com.gultekingultas.paymentapidemo.Entity.PaymentTransaction;
 import com.gultekingultas.paymentapidemo.Enum.PaymentType;
 import com.gultekingultas.paymentapidemo.Repository.PaymentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,12 @@ public class PaymentTransactionService {
     }
 
 
+    @Transactional
     public void createPaymentTransactionFromPaymentRequest(PaymentRequestDto paymentRequestDto , boolean isPaymentStatusOK)
     {
         PaymentTransaction paymentTransaction = new PaymentTransaction();
+        paymentTransaction.setName(paymentRequestDto.getName());
+        paymentTransaction.setSurname(paymentRequestDto.getSurname());
         paymentTransaction.setPaymentType(paymentRequestDto.getPaymentType().toString());
         paymentTransaction.setAmount(paymentRequestDto.getAmount());
         paymentTransaction.setOrderId(paymentRequestDto.getOrderId());
